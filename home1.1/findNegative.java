@@ -10,7 +10,11 @@ public class findNegative {
         String input = scanner.nextLine();
         String[] strArray = input.split(" ");
         int[] numArray = new int[strArray.length];
+        // are you sure that try block should be so big? it is better to cover only the relevant part of scope
         try {
+            // regarding parsing filtereng and other logic it is better to use tools available in language
+            // for example https://www.geeksforgeeks.org/stream-map-java-examples/
+            // and https://www.geeksforgeeks.org/stream-filter-java-examples/
             for (int i = 0; i < strArray.length; i++) {
                 numArray[i] = Integer.parseInt(strArray[i]);
             }
