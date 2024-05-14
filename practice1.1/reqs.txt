@@ -1,0 +1,15 @@
+a. As a cool programmer guy I want to have an ability to find the biggest negative value from the provided list of numbers. It will allow me to make my manual calculation faster.
+b. As a cool mathematician I want to be able to get roots of the quadratic equation ax^2 + bx + c. It will allow me to avoid hard calculations related to determinant.
+
+a.
+    Requirement 1: User should be able to enter any amount of integer numbers, separating them with spaces.
+    Requirement 2: Program should be able to correctly find the biggest negative value in the array.
+    Requirement 3: Program should be able to handle cases when user enters numbers in incorrect format.
+    Requirement 4: Program should be able to handle cases when there is no negative numbers in array.
+
+b. 
+    Requirement 1: User should be able to enter quadratic equation in format "ax^2 + bx + c"
+    Requirement 2: Program should be able to return correct roots of the equation using determinant approach.
+    Requirement 3: In case "a" variable in equation is equal 0, program should solve remaining "bx + c" part using linear equation approach.
+    Requirement 4: Program should be able to handle cases when user enters equation in incorrect format.
+    Requirement 5: Program should be able to handle cases when there is no roots for the entered equation.

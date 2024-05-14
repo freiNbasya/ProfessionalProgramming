@@ -1,0 +1,16 @@
+Test Case ID: 01
+Test Case Name: User runs program for the first time
+
+Preconditions:
+User never ran program previously.
+
+Test Steps:
+1. User starts program for the first time with "Doro" as their name as an arguement.
+2. Program outputs "Welcome, Doro!".
+3. Program ends the run.
+4. User starts the program for the second time with "Doro" as their name as an arguement.
+5. Program outputs ""Hello again, Doro".
+6. Program ends the run
+
+Expected Result:
+Program should recognize whether user used specific name for the first time or xN times.
