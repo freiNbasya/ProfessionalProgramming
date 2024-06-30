@@ -1,7 +1,9 @@
-
 #include <iostream>
 #include <vector>
+#include <ranges>
+#include <algorithm>
 #include <limits>
+#include <numeric> 
 
 class Rectangle {
 private:
@@ -29,44 +31,36 @@ int main() {
     double width, height;
     int numRectangles = 5;
 
+    rectangles.reserve(numRectangles);
+
     for (int i = 0; i < numRectangles; ++i) {
-        std::cout << "Enter rectangle " << i + 1 << " (width height):" << std::endl;
+        std::println("Enter rectangle ", i + 1, " (width height):");
         std::cin >> width >> height;
         rectangles.emplace_back(width, height);
     }
 
-    double biggestArea = 0;
-    double smallestArea = std::numeric_limits<double>::max();
-    for (const auto& rect : rectangles) {
-        if (rect.getArea() > biggestArea) {
-            biggestArea = rect.getArea();
-        }
-        if (rect.getArea() < smallestArea) {
-            smallestArea = rect.getArea();
-        }
-    }
+    auto areas = rectangles | std::views::transform([](const Rectangle& rect) { return rect.getArea(); });
+
+    auto [smallestArea, biggestArea] = std::ranges::minmax(areas);
 
     for (size_t i = 0; i < rectangles.size(); ++i) {
         for (size_t j = 0; j < rectangles.size(); ++j) {
             if (i != j && rectangles[i].canBePlacedInside(rectangles[j])) {
-                std::cout << "Rectangle " << i + 1 << " can be placed inside Rectangle " << j + 1 << std::endl;
+                std::println("Rectangle ", i + 1, " can be placed inside Rectangle ", j + 1);
             }
         }
     }
 
     for (size_t i = 0; i < rectangles.size(); ++i) {
         double biggestSide = std::max(rectangles[i].getWidth(), rectangles[i].getHeight());
-        std::cout << "The biggest side of rectangle " << i + 1 << ": " << biggestSide << std::endl;
+        std::println("The biggest side of rectangle ", i + 1, ": ", biggestSide);
     }
 
-    double totalArea = 0;
-    for (const auto& rect : rectangles) {
-        totalArea += rect.getArea();
-    }
+    double totalArea = std::accumulate(areas.begin(), areas.end(), 0.0);
     
-    std::cout << "Total area of rectangles: " << totalArea << std::endl;
-    std::cout << "The biggest area: " << biggestArea << std::endl;
-    std::cout << "The smallest area: " << smallestArea << std::endl;
+    std::println("Total area of rectangles: ", totalArea);
+    std::println("The biggest area: ", biggestArea);
+    std::println("The smallest area: ", smallestArea);
 
     return 0;
 }
