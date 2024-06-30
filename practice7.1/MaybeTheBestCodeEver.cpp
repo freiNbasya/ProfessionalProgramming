@@ -3,7 +3,8 @@
 #include <ranges>
 #include <algorithm>
 #include <limits>
-#include <numeric> 
+#include <numeric>
+#include <print>
 
 class Rectangle {
 private:
@@ -34,7 +35,7 @@ int main() {
     rectangles.reserve(numRectangles);
 
     for (int i = 0; i < numRectangles; ++i) {
-        std::println("Enter rectangle ", i + 1, " (width height):");
+        std::println("Enter rectangle {}", i + 1, " (width height):");
         std::cin >> width >> height;
         rectangles.emplace_back(width, height);
     }
@@ -46,21 +47,21 @@ int main() {
     for (size_t i = 0; i < rectangles.size(); ++i) {
         for (size_t j = 0; j < rectangles.size(); ++j) {
             if (i != j && rectangles[i].canBePlacedInside(rectangles[j])) {
-                std::println("Rectangle ", i + 1, " can be placed inside Rectangle ", j + 1);
+                std::println("Rectangle {}", i + 1, " can be placed inside Rectangle ", j + 1);
             }
         }
     }
 
     for (size_t i = 0; i < rectangles.size(); ++i) {
         double biggestSide = std::max(rectangles[i].getWidth(), rectangles[i].getHeight());
-        std::println("The biggest side of rectangle ", i + 1, ": ", biggestSide);
+        std::println("The biggest side of rectangle {}", i + 1, ": ", biggestSide);
     }
 
     double totalArea = std::accumulate(areas.begin(), areas.end(), 0.0);
     
-    std::println("Total area of rectangles: ", totalArea);
-    std::println("The biggest area: ", biggestArea);
-    std::println("The smallest area: ", smallestArea);
+    std::println("Total area of rectangles: {}", totalArea);
+    std::println("The biggest area: {}", biggestArea);
+    std::println("The smallest area: {}", smallestArea);
 
     return 0;
 }
