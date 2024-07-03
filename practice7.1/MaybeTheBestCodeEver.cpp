@@ -20,6 +20,7 @@ public:
     double getWidth() const { return width; }
     double getHeight() const { return height; }
     double getArea() const { return area; }
+    double getBiggestSide() const { return std::max(width, height); }
 
     bool canBePlacedInside(const Rectangle& other) const {
         return width <= other.getWidth() && height <= other.getHeight();
@@ -35,7 +36,7 @@ int main() {
     rectangles.reserve(numRectangles);
 
     for (int i = 0; i < numRectangles; ++i) {
-        std::println("Enter rectangle {}", i + 1, " (width height):");
+        std::println("Enter rectangle {} (width height):", i + 1);
         std::cin >> width >> height;
         rectangles.emplace_back(width, height);
     }
@@ -47,14 +48,13 @@ int main() {
     for (size_t i = 0; i < rectangles.size(); ++i) {
         for (size_t j = 0; j < rectangles.size(); ++j) {
             if (i != j && rectangles[i].canBePlacedInside(rectangles[j])) {
-                std::println("Rectangle {}", i + 1, " can be placed inside Rectangle ", j + 1);
+                std::println("Rectangle {} can be placed inside Rectangle {}", i + 1, j + 1);
             }
         }
     }
 
     for (size_t i = 0; i < rectangles.size(); ++i) {
-        double biggestSide = std::max(rectangles[i].getWidth(), rectangles[i].getHeight());
-        std::println("The biggest side of rectangle {}", i + 1, ": ", biggestSide);
+        std::println("The biggest side of rectangle {}: {}", i + 1, rectangles[i].getBiggestSide());
     }
 
     double totalArea = std::accumulate(areas.begin(), areas.end(), 0.0);
