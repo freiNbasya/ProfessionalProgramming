@@ -18,7 +18,7 @@ public:
     double topHeight = 0.0;
     double points = 0.0;
 
-    Team(std::string n) : name(n) {}
+    Team(std::string n) : name(std::move(n)) {}
 
     void updateStats(int scored, int missed, int yellow, int red, double height, double pts) {
         goalsScored += scored;
@@ -76,14 +76,42 @@ public:
         team2.updateStats(goals2, goals1, yellow2, red2, height2, points2);
     }
 
-void printResult() const {
-    std::println("Match: {} vs {}\n", team1.name, team2.name);
-    std::println("{}: Goals={}, Yellow Cards={}, Red Cards={}, Top Height={}, Points={}", 
-                 team1.name, goals1, yellow1, red1, height1, points1);
-    std::println("{}: Goals={}, Yellow Cards={}, Red Cards={}, Top Height={}, Points={}\n", 
-                 team2.name, goals2, yellow2, red2, height2, points2);
-}
+    void printResult() const {
+        std::println("Match: {} vs {}", team1.name, team2.name);
+        std::println("{}: Goals={}, Yellow Cards={}, Red Cards={}, Top Height={}, Points={}", 
+                     team1.name, goals1, yellow1, red1, height1, points1);
+        std::println("{}: Goals={}, Yellow Cards={}, Red Cards={}, Top Height={}, Points={}", 
+                     team2.name, goals2, yellow2, red2, height2, points2);
+    }
+};
 
+class MatchResult {
+public:
+    Team& team1;
+    Team& team2;
+    int goals1;
+    int goals2;
+    int yellow1;
+    int yellow2;
+    int red1;
+    int red2;
+    double height1;
+    double height2;
+    double points1;
+    double points2;
+
+    MatchResult(Match& match)
+        : team1(match.team1), team2(match.team2), goals1(match.goals1), goals2(match.goals2),
+          yellow1(match.yellow1), yellow2(match.yellow2), red1(match.red1), red2(match.red2),
+          height1(match.height1), height2(match.height2), points1(match.points1), points2(match.points2) {}
+
+    void printResult() const {
+        std::println("Match: {} vs {}", team1.name, team2.name);
+        std::println("{}: Goals={}, Yellow Cards={}, Red Cards={}, Top Height={}, Points={}", 
+                     team1.name, goals1, yellow1, red1, height1, points1);
+        std::println("{}: Goals={}, Yellow Cards={}, Red Cards={}, Top Height={}, Points={}", 
+                     team2.name, goals2, yellow2, red2, height2, points2);
+    }
 };
 
 void inputTeams(std::vector<Team>& teams) {
@@ -95,9 +123,10 @@ void inputTeams(std::vector<Team>& teams) {
     }
 }
 
-void inputMatches(std::vector<Match>& matches) {
+void inputMatches(std::vector<Match>& matches, std::vector<MatchResult>& matchResults) {
     for (auto& match : matches) {
         match.inputResult();
+        matchResults.emplace_back(match);
     }
 }
 
@@ -114,18 +143,17 @@ void printRanking(const std::vector<Team>& teams) {
         return (std::rand() % 2 == 0);
     });
 
-    std::println("Final Ranking:\n");
+    std::println("Final Ranking:");
     for (const auto& team : sorted_teams) {
-    std::println("{:<15}: Points={}, Top Height={}, Goal Difference={}, Goals Scored={}, Red Cards={}, Yellow Cards={}", 
-                  team.name, team.points, team.topHeight, team.goalDifference(), team.goalsScored, team.redCards, team.yellowCards);
+        std::println("{:<15}: Points={}, Top Height={}, Goal Difference={}, Goals Scored={}, Red Cards={}, Yellow Cards={}", 
+                     team.name, team.points, team.topHeight, team.goalDifference(), team.goalsScored, team.redCards, team.yellowCards);
+    }
 }
 
-}
-
-void printMatchResults(const std::vector<Match>& matches) {
-    std::println("\nMatch Results:\n");
-    for (const auto& match : matches) {
-        match.printResult();
+void printMatchResults(const std::vector<MatchResult>& matchResults) {
+    std::println("\nMatch Results:");
+    for (const auto& matchResult : matchResults) {
+        matchResult.printResult();
     }
 }
 
@@ -139,8 +167,9 @@ int main() {
         {teams[1], teams[2]}, {teams[1], teams[3]}, {teams[2], teams[3]}
     };
 
-    inputMatches(matches);
-    printMatchResults(matches);
+    std::vector<MatchResult> matchResults;
+    inputMatches(matches, matchResults);
+    printMatchResults(matchResults);
     printRanking(teams);
 
     return 0;

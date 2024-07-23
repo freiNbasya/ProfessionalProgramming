@@ -15,9 +15,10 @@ public class FootballTournament {
         }
     }
 
-    public static void inputMatches(List<Match> matches, Scanner scanner) {
+    public static void inputMatches(List<Match> matches, List<MatchResult> matchResults, Scanner scanner) {
         for (Match match : matches) {
             match.inputResult(scanner);
+            matchResults.add(new MatchResult(match));
         }
     }
 
@@ -33,7 +34,7 @@ public class FootballTournament {
                 if (a.goalsScored != b.goalsScored) return Integer.compare(b.goalsScored, a.goalsScored);
                 if (a.redCards != b.redCards) return Integer.compare(a.redCards, b.redCards);
                 if (a.yellowCards != b.yellowCards) return Integer.compare(a.yellowCards, b.yellowCards);
-                return (new Random().nextInt(2) == 0) ? -1 : 1; 
+                return (new Random().nextInt(2) == 0) ? -1 : 1;  // Random choice
             }
         });
 
@@ -44,10 +45,10 @@ public class FootballTournament {
         }
     }
 
-    public static void printMatchResults(List<Match> matches) {
+    public static void printMatchResults(List<MatchResult> matchResults) {
         System.out.println("\nMatch Results:");
-        for (Match match : matches) {
-            match.printResult();
+        for (MatchResult matchResult : matchResults) {
+            matchResult.printResult();
         }
     }
 
@@ -57,6 +58,7 @@ public class FootballTournament {
         inputTeams(teams, scanner);
 
         List<Match> matches = new ArrayList<>();
+        List<MatchResult> matchResults = new ArrayList<>();
         matches.add(new Match(teams.get(0), teams.get(1)));
         matches.add(new Match(teams.get(0), teams.get(2)));
         matches.add(new Match(teams.get(0), teams.get(3)));
@@ -64,8 +66,8 @@ public class FootballTournament {
         matches.add(new Match(teams.get(1), teams.get(3)));
         matches.add(new Match(teams.get(2), teams.get(3)));
 
-        inputMatches(matches, scanner);
-        printMatchResults(matches);
+        inputMatches(matches, matchResults, scanner);
+        printMatchResults(matchResults);
         printRanking(teams);
     }
 }
